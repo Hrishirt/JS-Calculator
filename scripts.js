@@ -6,8 +6,8 @@ class Calculator{
     }
 
     clear() {
-        this.currentOperandTextElement = ''
-        this.previousOperandTextElement = ''
+        this.currentOperand = ''
+        this.previousOperand = ''
         this.operation = undefined
     }
 
@@ -16,11 +16,14 @@ class Calculator{
     }
 
     appendNumber(number){
-        this.currentOperand = number
+        if (number === '.' && this.currentOperand.includes('.')) return
+        this.currentOperand = this.currentOperand.toString() + number.toString()
     }
 
     chooseOperation(operation){
-
+        this.operation = operation
+        this.previousOperand = this.currentOperand
+        this.currentOperand = ''
     }
 
     compute(){
@@ -48,4 +51,20 @@ numberButton.forEach(button => {
         calculator.appendNumber(button.innerText)
         calculator.updateDisplay()
     })
+})
+operationButton.forEach(button => {
+    button.addEventListener('click', () => {
+        calculator.chooseOperation(button.innerText)
+        calculator.updateDisplay()
+    })
+})
+
+allClearButton.addEventListener('click', button => {
+    calculator.clear()
+    calculator.updateDisplay()
+  })
+  
+  deleteButton.addEventListener('click', () => {
+    calculator.delete()
+    calculator.updateDisplay()
 })
